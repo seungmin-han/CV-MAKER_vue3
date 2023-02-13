@@ -18,15 +18,23 @@
 					</tr>
 					<tr>
 						<th>주민등록번호</th>
-						<td><input type="text" v-model="profile.dob"></td>
-						<th>성별</th>
-						<td><input type="text" v-model="profile.gender"></td>
+						<td colspan="3"><input type="text" v-model="profile.dob"></td>
 					</tr>
 					<tr>
+						<th>성별</th>
+						<td><input type="tel" v-model="profile.gender"></td>
 						<th>전화번호</th>
 						<td><input type="text" v-model="profile.phoneNumber"></td>
+					</tr>
+					<tr>
 						<th>이메일</th>
 						<td><input type="email" v-model="profile.email"></td>
+						<th>Github</th>
+						<td><input type="url" v-model="profile.githubAddress"></td>
+					</tr>
+					<tr>
+						<th>주소</th>
+						<td colspan="3"><textarea rows="1" v-model="profile.address" @input="resize"></textarea></td>
 					</tr>
 				</table>
 			</div>
@@ -135,7 +143,8 @@
 					<tr v-for="(award,index) in awardList" :key="index">
 						<td><input type="text" v-model="award.awardDate"></td>
 						<td><input type="text" v-model="award.awardNm"></td>
-						<td><input type="text" maxlength="50" v-model="award.awardLevel"></td>
+						<!-- <td><input type="text" maxlength="50" v-model="award.awardLevel"></td> -->
+						<td><textarea v-model="award.awardLevel" maxlength="50" rows="1" @input="resize"></textarea></td>
 						<td><input type="text" v-model="award.awardInstitution"></td>
 						<td>
 							<button 
@@ -196,6 +205,45 @@
 				</tbody>
 			</table>
 		</div>
+		<!-- 포트폴리오 -->
+		<div class="portfolio_container table_container mt-50">
+			<h3>포트폴리오</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>기간</th>
+						<th>활동명</th>
+						<th>활동내용</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(portfolio, index) in portfolioList" :key="index">
+						<td><input type="text" v-model="portfolio.portfolioDate"></td>
+						<td><input type="text" v-model="portfolio.portfolioNm"></td>
+						<!-- <td><input type="text" v-model="portfolio.portfolioContent"></td> -->
+						<td><textarea v-model="portfolio.portfolioContent" rows="1" @input="resize"></textarea></td>
+						<td>
+							<button 
+								v-if="editMode"
+								class="btn delete" 
+								:disabled="index==0" 
+								:class="{disabled:index==0}"
+								@click="licenseList.splice(index,1)">
+								삭제
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td v-if="editMode" colspan="4">
+							<button class="btn" @click="addItem.license">
+								추가
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </template>
 
@@ -216,6 +264,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 	const educationList = reactive([{graduationCode:-1}]);
 	const awardList = reactive([{}]);
 	const licenseList = reactive([{}]);
+	const portfolioList = reactive([{}]);
 
 	const editMode = ref(false);
 
@@ -232,21 +281,29 @@ import { onMounted, reactive, ref, watch } from "vue";
 		license: () => {
 			licenseList.push({});
 		},
+		portfolio: () => {
+			portfolioList.push({});
+		},
 	}
 
 	watch(editMode, (newValue)=>{
-		let els = document.querySelectorAll('input, select');
+		let els = document.querySelectorAll('input, select, textarea');
 		for (let el of els) {
 			el.disabled = !newValue;
 		}
 	});
 
 	onMounted(()=> {
-		let els = document.querySelectorAll('input, select');
+		let els = document.querySelectorAll('input, select, textarea');
 		for (let el of els) {
 			el.disabled = true;
 		}
 	})
+
+	const resize = (e) => {
+		e.target.style.height = '1px';
+		e.target.style.height = e.target.scrollHeight + 'px';
+	}
 
 	const changeImg = (e)=> {
 		try {
@@ -292,6 +349,14 @@ import { onMounted, reactive, ref, watch } from "vue";
 			width: 100%;
 			line-height: inherit;
 			text-align: center;
+			word-wrap: break-word;
+		}
+		>textarea {
+			width: 100%;
+			height: auto;
+			outline: none;
+			border: none;
+			resize: none;
 		}
 	}
 
