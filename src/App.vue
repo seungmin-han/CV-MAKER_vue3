@@ -49,7 +49,7 @@
 						<th>기관명</th>
 						<th>전공</th>
 						<th>졸업구분</th>
-						<th></th>
+						<th v-if="editMode"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -67,9 +67,8 @@
 								{{education.graduationCode == -1 ? '' : OPTION_LIST.find(v=>v.value==education.graduationCode)?.title}} 
 							</template>
 						</td>
-						<td>
+						<td v-if="editMode">
 							<button 
-								v-if="editMode"
 								class="btn delete" 
 								:disabled="index==0" 
 								:class="{disabled:index==0}"
@@ -97,7 +96,7 @@
 						<th>근무기간</th>
 						<th>소속</th>
 						<th>직무</th>
-						<th></th>
+						<th v-if="editMode"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -105,9 +104,8 @@
 						<td><input type="text" v-model="career.careerDate"></td>
 						<td><input type="text" v-model="career.careerCompany"></td>
 						<td><input type="text" v-model="career.careerWork"></td>
-						<td>
+						<td v-if="editMode">
 							<button 
-								v-if="editMode"
 								class="btn delete" 
 								:disabled="index==0" 
 								:class="{disabled:index==0}"
@@ -136,7 +134,7 @@
 						<th>상훈명</th>
 						<th>수상내역</th>
 						<th>수여기관</th>
-						<th></th>
+						<th v-if="editMode"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -146,9 +144,8 @@
 						<!-- <td><input type="text" maxlength="50" v-model="award.awardLevel"></td> -->
 						<td><textarea v-model="award.awardLevel" maxlength="50" rows="1" @input="resize"></textarea></td>
 						<td><input type="text" v-model="award.awardInstitution"></td>
-						<td>
+						<td v-if="editMode">
 							<button 
-								v-if="editMode"
 								class="btn delete" 
 								:disabled="index==0" 
 								:class="{disabled:index==0}"
@@ -176,7 +173,7 @@
 						<th>취득일자</th>
 						<th>자격증명</th>
 						<th>발행기관</th>
-						<th></th>
+						<th v-if="editMode"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -184,9 +181,8 @@
 						<td><input type="text" v-model="license.licenseDate"></td>
 						<td><input type="text" v-model="license.licenseNm"></td>
 						<td><input type="text" v-model="license.licenseInstitution"></td>
-						<td>
+						<td v-if="editMode">
 							<button 
-								v-if="editMode"
 								class="btn delete" 
 								:disabled="index==0" 
 								:class="{disabled:index==0}"
@@ -214,7 +210,7 @@
 						<th>기간</th>
 						<th>활동명</th>
 						<th>활동내용</th>
-						<th></th>
+						<th v-if="editMode"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -223,9 +219,8 @@
 						<td><input type="text" v-model="portfolio.portfolioNm"></td>
 						<!-- <td><input type="text" v-model="portfolio.portfolioContent"></td> -->
 						<td><textarea v-model="portfolio.portfolioContent" rows="1" @input="resize"></textarea></td>
-						<td>
+						<td v-if="editMode">
 							<button 
-								v-if="editMode"
 								class="btn delete" 
 								:disabled="index==0" 
 								:class="{disabled:index==0}"
@@ -340,11 +335,15 @@ import { onMounted, reactive, ref, watch } from "vue";
 	}
 
 	th {
+		padding-left: 5px;
 		background-color: #ddd;
 	}
 
 	td {
 		text-align: center;
+		input, textarea {
+			padding-left: 5px;
+		}
 		> input {
 			width: 100%;
 			line-height: inherit;
@@ -414,7 +413,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 		}
 
 		.table_container {
-			width: 90%;
+			width: 92%;
 			table {
 				margin-top: 20px;
 			}
