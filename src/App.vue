@@ -1,6 +1,8 @@
 <template>
+	<button @click="editMode=!editMode">토글</button>
 	<div class="container">
 		<h1>이 력 서 양 식</h1>
+		<!-- 프로필 -->
 		<div class="profile_container mt-50">
 			<div class="profile_img" @click="fileEl.click()">
 				<img :src="profile.imgSrc" width="100" height="" alt="프로필 이미지">
@@ -29,7 +31,8 @@
 				</table>
 			</div>
 		</div>
-		<div class="education_container mt-50">
+		<!-- 학력 -->
+		<div class="education_container table_container mt-50">
 			<h3>학력</h3>
 			<table>
 				<thead>
@@ -56,30 +59,35 @@
 							</select>
 						</td>
 						<td>
-							<button class="btn delete" @click="educationList.splice(index,1)">
+							<button 
+								v-if="editMode"
+								class="btn delete" 
+								:disabled="index==0" 
+								:class="{disabled:index==0}"
+								@click="educationList.splice(index,1)">
 								삭제
 							</button>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="5">
-							<button class="btn" @click="addEducationList">
+						<td v-if="editMode" colspan="5">
+							<button class="btn" @click="addItem.education">
 								추가
 							</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			
 		</div>
-		<div class="career_container mt-50">
+		<!-- 경력 -->
+		<div class="career_container table_container mt-50">
 			<h3>경력</h3>
 			<table>
 				<thead>
 					<tr>
 						<th>근무기간</th>
 						<th>소속</th>
-						<th colspan="2">직무</th>
+						<th>직무</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -87,37 +95,150 @@
 					<tr v-for="(career,index) in careerList" :key="index">
 						<td><input type="text" v-model="career.careerDate"></td>
 						<td><input type="text" v-model="career.careerCompany"></td>
-						<td colspan="2"><input type="text" v-model="career.careerWork"></td>
+						<td><input type="text" v-model="career.careerWork"></td>
 						<td>
-							<button class="btn delete" @click="careerList.splice(index,1)">
+							<button 
+								v-if="editMode"
+								class="btn delete" 
+								:disabled="index==0" 
+								:class="{disabled:index==0}"
+								@click="careerList.splice(index,1)">
 								삭제
 							</button>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="5">
-							<button class="btn" @click="addCareerList">
+						<td v-if="editMode" colspan="4">
+							<button class="btn" @click="addItem.career">
 								추가
 							</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		<!-- 수상기록 -->
+		<div class="award_container table_container mt-50">
+			<h3>수상기록</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>수상일자</th>
+						<th>상훈명</th>
+						<th>수상내역</th>
+						<th>수여기관</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(award,index) in awardList" :key="index">
+						<td><input type="text" v-model="award.awardDate"></td>
+						<td><input type="text" v-model="award.awardNm"></td>
+						<td><input type="text" v-model="award.awardLevel"></td>
+						<td><input type="text" v-model="award.awardInstitution"></td>
+						<td>
+							<button 
+								v-if="editMode"
+								class="btn delete" 
+								:disabled="index==0" 
+								:class="{disabled:index==0}"
+								@click="awardList.splice(index,1)">
+								삭제
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td v-if="editMode" colspan="5">
+							<button class="btn" @click="addItem.award">
+								추가
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 자격증 -->
+		<div class="license_container table_container mt-50">
+			<h3>자격증</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>취득일자</th>
+						<th>자격증명</th>
+						<th>발행기관</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(license,index) in licenseList" :key="index">
+						<td><input type="text" v-model="license.licenseDate"></td>
+						<td><input type="text" v-model="license.licenseNm"></td>
+						<td><input type="text" v-model="license.licenseInstitution"></td>
+						<td>
+							<button 
+								v-if="editMode"
+								class="btn delete" 
+								:disabled="index==0" 
+								:class="{disabled:index==0}"
+								@click="licenseList.splice(index,1)">
+								삭제
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td v-if="editMode" colspan="4">
+							<button class="btn" @click="addItem.license">
+								추가
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 	const fileEl = ref(null);
 	const profile = reactive({});
 	const careerList = reactive([{}]);
-	const addCareerList = () => careerList.push({});
 	const educationList = reactive([{graduationCode:-1}]);
-	const addEducationList = () => educationList.push({graduationCode:-1});
+	const awardList = reactive([{}]);
+	const licenseList = reactive([{}]);
+
+	const editMode = ref(false);
+
+	const addItem =  {
+		career: () => {
+			careerList.push({});
+		},
+		education: () => {
+			educationList.push({graduationCode:-1});
+		},
+		award: () => {
+			awardList.push({});
+		},
+		license: () => {
+			licenseList.push({});
+		},
+	}
+
+	watch(editMode, (newValue)=>{
+		let els = document.querySelectorAll('input, select');
+		for (let el of els) {
+			el.disabled = !newValue;
+		}
+	});
+
+	onMounted(()=> {
+		let els = document.querySelectorAll('input, select');
+		for (let el of els) {
+			el.disabled = true;
+		}
+	})
+
 	const changeImg = (e)=> {
-		console.log(e);
 		try {
 			let reader = new FileReader();
 			reader.onload = (res) => {
@@ -166,14 +287,26 @@ import { reactive, ref } from "vue";
 	input:focus {
 		outline: none;
 	}
+	button {
+		cursor: pointer;
+		&.disabled {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+	}
 	
 
 	.container {
+		width: 21cm;
+		height: 29.7cm;
+		
 		margin: 0 auto;
-		width: 1200px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		h1 {
+			margin-top: 20px;
+		}
 		.profile_container {
 			width: 100%;
 			display: flex;
@@ -201,8 +334,8 @@ import { reactive, ref } from "vue";
 			}
 		}
 
-		.education_container, .career_container {
-			width: 60%;
+		.table_container {
+			width: 90%;
 			table {
 				margin-top: 20px;
 			}
