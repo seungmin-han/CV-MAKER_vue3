@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h1>이 력 서</h1>
+		<h1>이 력 서 양 식</h1>
 		<div class="profile_container mt-50">
 			<div class="profile_img" @click="fileEl.click()">
 				<img :src="profile.imgSrc" width="100" height="" alt="프로필 이미지">
@@ -38,6 +38,7 @@
 						<th>기관명</th>
 						<th>전공</th>
 						<th>졸업구분</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -54,12 +55,55 @@
 								<option value="3">중퇴</option>
 							</select>
 						</td>
+						<td>
+							<button class="btn delete" @click="educationList.splice(index,1)">
+								삭제
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5">
+							<button class="btn" @click="addEducationList">
+								추가
+							</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
-			<button @click="addEducationList">
-				추가
-			</button>
+			
+		</div>
+		<div class="career_container mt-50">
+			<h3>경력</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>근무기간</th>
+						<th>소속</th>
+						<th colspan="2">직무</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(career,index) in careerList" :key="index">
+						<td><input type="text" v-model="career.careerDate"></td>
+						<td><input type="text" v-model="career.careerCompany"></td>
+						<td colspan="2"><input type="text" v-model="career.careerWork"></td>
+						<td>
+							<button class="btn delete" @click="careerList.splice(index,1)">
+								삭제
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5">
+							<button class="btn" @click="addCareerList">
+								추가
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
 		</div>
 	</div>
 </template>
@@ -68,6 +112,8 @@
 import { reactive, ref } from "vue";
 	const fileEl = ref(null);
 	const profile = reactive({});
+	const careerList = reactive([{}]);
+	const addCareerList = () => careerList.push({});
 	const educationList = reactive([{graduationCode:-1}]);
 	const addEducationList = () => educationList.push({graduationCode:-1});
 	const changeImg = (e)=> {
@@ -101,9 +147,26 @@ import { reactive, ref } from "vue";
 		border: 1px solid;
 	}
 
+	table {
+		width: 100%;
+	}
+
+	th {
+		background-color: #ddd;
+	}
+
+	td > input {
+		width: 100%;
+		line-height: inherit;
+	}
+
 	input, select {
 		border: none;
 	}
+	input:focus {
+		outline: none;
+	}
+	
 
 	.container {
 		margin: 0 auto;
@@ -112,6 +175,7 @@ import { reactive, ref } from "vue";
 		flex-direction: column;
 		align-items: center;
 		.profile_container {
+			width: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -122,7 +186,6 @@ import { reactive, ref } from "vue";
 			th {
 				padding: 5px;
 				text-align: left;
-				background-color: #ddd;
 			}
 
 			.profile_img {
@@ -136,6 +199,25 @@ import { reactive, ref } from "vue";
 				display: flex;
 				align-content: center;
 			}
+		}
+
+		.education_container, .career_container {
+			width: 60%;
+			table {
+				margin-top: 20px;
+			}
+			.btn {
+				padding: 5px;
+				width: 100%;
+				font-size: 12px;
+				font-weight: bold;
+				border: none;
+				&.delete {
+					background-color: #f94141;
+					color: #fff;
+				}
+			}
+			
 		}
 	}
 	
