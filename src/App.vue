@@ -5,7 +5,7 @@
 		<!-- 프로필 -->
 		<div class="profile_container mt-50">
 			<div class="profile_img" @click="fileEl.click()">
-				<img :src="profile.imgSrc" width="100" height="" alt="프로필 이미지">
+				<img :src="profile.imgSrc" width="125" height="" alt="프로필 이미지">
 				<input type="file" style="display: none;" ref="fileEl" @change="changeImg">
 			</div>
 			<div class="profile_info">
@@ -375,6 +375,8 @@ import { onMounted, reactive, ref, watch } from "vue";
 	
 
 	.container {
+		box-shadow: 0px 0px 20px #000;
+
 		width: 21cm;
 		height: 29.7cm;
 		
@@ -402,9 +404,9 @@ import { onMounted, reactive, ref, watch } from "vue";
 			.profile_img {
 				box-sizing: content-box;
 				border: 1px solid #000;
-				width: 100px;
-				height: 120px;
-				line-height: 120px;
+				width: 125px;
+				height: 150px;
+				line-height: 150px;
 				font-size: 12px;
 				text-align: center;
 				display: flex;
