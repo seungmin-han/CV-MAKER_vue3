@@ -1,7 +1,7 @@
 <template>
-	<button @click="editMode=!editMode">토글</button>
+	<button @click="editMode=!editMode" style="position:fixed; top: 100px; left:100px; width:100px; height:50px">{{editMode?'View':'Edit'}} Mode</button>
 	<div class="container">
-		<h1>이 력 서 양 식</h1>
+		<h1>이 력 서</h1>
 		<!-- 프로필 -->
 		<div class="profile_container mt-50">
 			<div class="profile_img" @click="fileEl.click()">
@@ -378,15 +378,13 @@ import { onMounted, reactive, ref, watch } from "vue";
 		box-shadow: 0px 0px 20px #000;
 
 		width: 21cm;
-		height: 29.7cm;
+		min-height: 29.7cm;
+		padding: 20px;
 		
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		h1 {
-			margin-top: 20px;
-		}
 		.profile_container {
 			width: 100%;
 			display: flex;
@@ -434,5 +432,8 @@ import { onMounted, reactive, ref, watch } from "vue";
 		}
 	}
 	
+	body {
+		margin: 30px 0;
+	}
 
 </style>
