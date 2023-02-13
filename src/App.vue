@@ -50,13 +50,14 @@
 						<td><input type="text" v-model="education.eduSchoolNm"></td>
 						<td><input type="text" v-model="education.eduMajor"></td>
 						<td>
-							<select name="graduationCode" v-model="education.graduationCode">
-								<option value="-1">졸업 구분을 선택해주세요</option>
-								<option value="0">재학</option>
-								<option value="1">졸업</option>
-								<option value="2">휴학</option>
-								<option value="3">중퇴</option>
+							<select v-if="editMode" name="graduationCode" v-model="education.graduationCode">
+								<option v-for="option in OPTION_LIST" :key="option.value" :value="option.value">
+									{{option.title}}
+								</option>
 							</select>
+							<template v-else>
+								{{education.graduationCode == -1 ? '' : OPTION_LIST.find(v=>v.value==education.graduationCode)?.title}} 
+							</template>
 						</td>
 						<td>
 							<button 
@@ -200,6 +201,15 @@
 
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
+
+	const OPTION_LIST = [
+		{value:'-1',title:'졸업 구분을 선택해주세요'},
+		{value:'0',title:'재학'},
+		{value:'1',title:'졸업'},
+		{value:'2',title:'휴학'},
+		{value:'3',title:'중퇴'},
+	]
+
 	const fileEl = ref(null);
 	const profile = reactive({});
 	const careerList = reactive([{}]);
@@ -276,9 +286,13 @@ import { onMounted, reactive, ref, watch } from "vue";
 		background-color: #ddd;
 	}
 
-	td > input {
-		width: 100%;
-		line-height: inherit;
+	td {
+		text-align: center;
+		> input {
+			width: 100%;
+			line-height: inherit;
+			text-align: center;
+		}
 	}
 
 	input, select {
