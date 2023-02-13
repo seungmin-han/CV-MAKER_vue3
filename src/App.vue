@@ -135,7 +135,7 @@
 					<tr v-for="(award,index) in awardList" :key="index">
 						<td><input type="text" v-model="award.awardDate"></td>
 						<td><input type="text" v-model="award.awardNm"></td>
-						<td><input type="text" v-model="award.awardLevel"></td>
+						<td><input type="text" maxlength="50" v-model="award.awardLevel"></td>
 						<td><input type="text" v-model="award.awardInstitution"></td>
 						<td>
 							<button 
