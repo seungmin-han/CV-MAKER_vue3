@@ -7,12 +7,12 @@
 		>
 			{{editMode?'View':'Edit'}} Mode
 		</button>
-		<button 
+		<!-- <button 
 			@click="isRow=!isRow"
 			style="width:100px; height:50px"
 		>
 			{{isRow ? 'Column' : 'Row' }} View
-		</button>
+		</button> -->
 		<button 
 			@click="saveToPDF"
 			style="width:100px; height:50px"
@@ -57,7 +57,7 @@
 								</tr>
 								<tr>
 									<th>주민등록번호</th>
-									<td colspan="3"><input type="text" v-model="profile.dob"></td>
+									<td colspan="3"><input class="ta-l" type="text" v-model="profile.dob"></td>
 								</tr>
 								<tr>
 									<th>성별</th>
@@ -73,7 +73,16 @@
 								</tr>
 								<tr>
 									<th>주소</th>
-									<td colspan="3"><textarea rows="1" v-model="profile.address" @input="resize"></textarea></td>
+									<td colspan="3" class="profile">
+										<!-- <textarea rows="1" v-model="profile.address" @input="resize($event.target)"></textarea> -->
+										<div 
+											class="textarea-div ta-l profile" 
+											:contenteditable="editMode" 
+											@input="inputText(profile.address, $event)"
+										> 
+											{{profile.address}}
+										</div>
+									</td>
 								</tr>
 							</table>
 						</div>
@@ -179,16 +188,32 @@
 							<tbody>
 								<tr v-for="(award,index) in awardList" :key="index">
 									<td><input type="text" v-model="award.awardDate"></td>
-									<td>
-										<textarea 
+									<td class="award">
+										<!-- <textarea 
 											v-model="award.awardNm" 
 											maxlength="50" 
 											rows="1" 
-											@input="resize">
-										</textarea>
+											@input="resize($event.target)">
+										</textarea> -->
+										<div 
+											class="textarea-div ta-l" 
+											:contenteditable="editMode" 
+											@input="inputText(award.awardNm, $event)"
+										> 
+											{{award.awardNm}}
+										</div>
 									</td>
 									<!-- <td><input type="text" maxlength="50" v-model="award.awardLevel"></td> -->
-									<td><textarea v-model="award.awardLevel" maxlength="50" rows="1" @input="resize"></textarea></td>
+									<td class="award">
+										<!-- <textarea v-model="award.awardLevel" maxlength="50" rows="1" @input="resize($event.target)"></textarea> -->
+										<div 
+											class="textarea-div ta-l" 
+											:contenteditable="editMode" 
+											@input="inputText(award.awardLevel, $event)"
+										> 
+											{{award.awardLevel}}
+										</div>
+									</td>
 									<td><input type="text" v-model="award.awardInstitution"></td>
 									<td v-if="editMode">
 										<button 
@@ -264,7 +289,16 @@
 									<td><input type="text" v-model="portfolio.portfolioDate"></td>
 									<td><input type="text" v-model="portfolio.portfolioNm"></td>
 									<!-- <td><input type="text" v-model="portfolio.portfolioContent"></td> -->
-									<td><textarea v-model="portfolio.portfolioContent" rows="1" @input="resize"></textarea></td>
+									<td class="portfolio">
+										<!-- <textarea v-model="portfolio.portfolioContent" rows="1" @input="resize($event.target)"></textarea> -->
+										<div 
+											class="textarea-div ta-l portfolio" 
+											:contenteditable="editMode" 
+											@input="inputText(portfolio.portfolioContent, $event)"
+										> 
+											{{portfolio.portfolioContent}}
+										</div>
+									</td>
 									<td v-if="editMode">
 										<button 
 											class="btn delete" 
@@ -315,8 +349,15 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>
-										<textarea rows="2" v-model="cl.content" @input="resize"></textarea>
+									<td class="cover-letter">
+										<!-- <textarea v-if="editMode" rows="2" v-model="cl.content" @input="resize($event.target)"></textarea> -->
+										<div 
+											class="textarea-div ta-l" 
+											:contenteditable="editMode" 
+											@input="inputText(cl.content, $event)"
+										> 
+											{{cl.content}}
+										</div>
 									</td>
 								</tr>
 							</tbody>
@@ -373,6 +414,10 @@ import VueHtml2pdf from 'vue3-html2pdf';
 	const coverLetterList = reactive([{}]);
 
 	const editMode = ref(false);
+
+	const inputText = (target, event) => {
+		target = event.target.innerHTML;
+	}
 
 	const saveToPDF = () => {
 		h2p.value.generatePdf();
@@ -432,10 +477,10 @@ import VueHtml2pdf from 'vue3-html2pdf';
 		}
 	})
 
-	const resize = (e) => {
-		e.target.style.height = '1px';
-		e.target.style.height = e.target.scrollHeight + 'px';
-	}
+	// const resize = (target) => {
+	// 	target.style.height = '1px';
+	// 	target.style.height = target.scrollHeight + 'px';
+	// }
 
 	const changeImg = (e)=> {
 		try {
@@ -518,8 +563,36 @@ import VueHtml2pdf from 'vue3-html2pdf';
 			background-color: #ddd;
 		}
 
+		.ta-l {
+			text-align: left;
+		}
+
 		td {
 			text-align: center;
+			&.profile {
+				width: 430px;
+				word-break: break-word;
+			}
+
+			&.award {
+				min-width: 150px;
+				max-width: 180px;
+				word-break: break-word;
+			}
+
+			&.cover-letter {
+				width: 730px;
+				word-break: break-word;
+				> .textarea-div {
+					min-height: 30px;
+				}
+			}
+
+			&.portfolio {
+				max-width: 300px;
+				word-break: break-word;
+			}
+
 			input, textarea {
 				padding-left: 5px;
 			}
@@ -533,16 +606,21 @@ import VueHtml2pdf from 'vue3-html2pdf';
 			> textarea {
 				width: 100%;
 				height: auto;
+				font-size: 15px;
 				outline: none;
 				border: none;
 				resize: none;
 				line-height: 15px;
-				word-break: break-all;
+				padding: 2px;
+			}
+			> .textarea-div {
+				width: 100%;
+				min-height: 15px;
+				line-height: 15px;
+				font-size: 15px;
+				padding: 2px;
 			}
 		}
-
-		
-		
 
 		.container {
 			box-shadow: 0px 0px 20px #000;
@@ -594,7 +672,9 @@ import VueHtml2pdf from 'vue3-html2pdf';
 		.cover-letter-container {
 			margin-top: 30px;
 			th {
-				padding: 5px;
+				height: 30px;
+				line-height: 30px;
+				// padding: 5px;
 				width: 100%;
 				display: flex;
 				border: none;
