@@ -12,7 +12,8 @@
     "sass": "^1.58.0",
     "sass-loader": "^13.2.0",
     "scss": "^0.2.4",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue3-html2pdf": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
