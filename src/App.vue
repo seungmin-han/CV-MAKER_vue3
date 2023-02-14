@@ -4,12 +4,13 @@
 	<div class="container">
 		<h1>이 력 서</h1>
 		<!-- 프로필 -->
-		<div class="profile_container mt-50">
-			<div class="profile_img" @click="fileEl.click()">
-				<img :src="profile.imgSrc" width="125" height="" alt="프로필 이미지">
+		<div class="profile-container mt-50">
+			<div class="profile-img" :class="{'img-selected':profile.imgSrc}" @click="fileEl.click()">
+				<p v-if="!profile.imgSrc">이미지 선택</p>
+				<img :src="profile.imgSrc" v-if="profile.imgSrc" width="125" height="" alt="프로필 이미지">
 				<input type="file" style="display: none;" ref="fileEl" @change="changeImg">
 			</div>
-			<div class="profile_info">
+			<div class="profile-info">
 				<table>
 					<tr>
 						<th>이름</th>
@@ -41,7 +42,7 @@
 			</div>
 		</div>
 		<!-- 학력 -->
-		<div class="education_container table_container mt-50">
+		<div class="education-container table-container mt-50">
 			<h3>학력</h3>
 			<table>
 				<thead>
@@ -59,7 +60,7 @@
 						<td><input type="text" v-model="education.eduSchoolNm"></td>
 						<td><input type="text" v-model="education.eduMajor"></td>
 						<td>
-							<select v-if="editMode" name="graduationCode" v-model="education.graduationCode">
+							<select v-if="editMode" v-model="education.graduationCode">
 								<option v-for="option in OPTION_LIST" :key="option.value" :value="option.value">
 									{{option.title}}
 								</option>
@@ -89,7 +90,7 @@
 			</table>
 		</div>
 		<!-- 경력 -->
-		<div class="career_container table_container mt-50">
+		<div class="career-container table-container mt-50">
 			<h3>경력</h3>
 			<table>
 				<thead>
@@ -126,7 +127,7 @@
 			</table>
 		</div>
 		<!-- 수상기록 -->
-		<div class="award_container table_container mt-50">
+		<div class="award-container table-container mt-50">
 			<h3>수상기록</h3>
 			<table>
 				<thead>
@@ -166,7 +167,7 @@
 			</table>
 		</div>
 		<!-- 자격증 -->
-		<div class="license_container table_container mt-50">
+		<div class="license-container table-container mt-50">
 			<h3>자격증</h3>
 			<table>
 				<thead>
@@ -203,7 +204,7 @@
 			</table>
 		</div>
 		<!-- 포트폴리오 -->
-		<div class="portfolio_container table_container mt-50">
+		<div class="portfolio-container table-container mt-50">
 			<h3>포트폴리오</h3>
 			<table>
 				<thead>
@@ -246,7 +247,7 @@
 		<h1>자기소개서</h1>
 
 		<div 
-			class="introduce_container table_container mt-50" 
+			class="cover-letter-container table-container" 
 			v-for="(cl, index) in coverLetterList" 
 			:key="index"
 		>
@@ -254,7 +255,7 @@
 				<thead>
 					<tr>
 						<th>
-							<input type="text" v-model="cl.title">
+							<input type="text" v-model="cl.title" placeholder="타이틀을 입력해주세요.">
 							<div class="btn-group" v-if="editMode">
 								<button class="btn delete" @click="openConfirm(index)">삭제</button>
 							</div>
@@ -264,11 +265,20 @@
 				<tbody>
 					<tr>
 						<td>
-							<textarea rows="1" @input="resize"></textarea>
+							<textarea rows="2" @input="resize"></textarea>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="cover-letter-add">
+			<button 
+				class="btn" 
+				v-if="editMode"
+				@click="addItem.coverLetter"
+			>
+				추가
+			</button>
 		</div>
 	</div>
 	<ConfirmView 
@@ -404,6 +414,9 @@ import ConfirmView from "@/components/ConfirmView";
 	.mt-50 {
 		margin-top: 50px;
 	}
+	.w-100 {
+		width: 100%;
+	}
 
 	table, td, th {
 		border-collapse : collapse;
@@ -453,7 +466,7 @@ import ConfirmView from "@/components/ConfirmView";
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		.profile_container {
+		.profile-container {
 			width: 100%;
 			display: flex;
 			align-items: center;
@@ -464,20 +477,22 @@ import ConfirmView from "@/components/ConfirmView";
 				text-align: left;
 			}
 
-			.profile_img {
+			.profile-img {
 				box-sizing: content-box;
 				border: 1px solid #000;
 				width: 125px;
 				height: 150px;
-				line-height: 150px;
 				font-size: 12px;
-				text-align: center;
 				display: flex;
-				align-content: center;
+				align-items: center;
+				justify-content: center;
+				&.img-selected {
+					background-color: #000;
+				}
 			}
 		}
 
-		.table_container {
+		.table-container {
 			width: 100%;
 			table {
 				margin-top: 20px;
@@ -487,7 +502,8 @@ import ConfirmView from "@/components/ConfirmView";
 		}
 	}
 
-	.introduce_container {
+	.cover-letter-container {
+		margin-top: 30px;
 		th {
 			padding: 5px;
 			width: 100%;
@@ -500,6 +516,10 @@ import ConfirmView from "@/components/ConfirmView";
 				background: none;
 			}
 		}
+	}
+	.cover-letter-add {
+		width: 100%;
+		margin-top: 10px;
 	}
 
 </style>
