@@ -245,14 +245,18 @@
 	<div class="container">
 		<h1>자기소개서</h1>
 
-		<div class="introduce_container table_container mt-50" v-for="(cl, index) in coverLetterList" :key="index">
+		<div 
+			class="introduce_container table_container mt-50" 
+			v-for="(cl, index) in coverLetterList" 
+			:key="index"
+		>
 			<table>
 				<thead>
 					<tr>
 						<th>
 							<input type="text" v-model="cl.title">
 							<div class="btn-group" v-if="editMode">
-								<button class="btn delete" @click="showConfirm(index)">삭제</button>
+								<button class="btn delete" @click="openConfirm(index)">삭제</button>
 							</div>
 						</th>
 					</tr>
@@ -267,10 +271,16 @@
 			</table>
 		</div>
 	</div>
+	<ConfirmView 
+		v-if="showConfirm" 
+		@close="showConfirm = false" 
+		@delete="deleteItem">
+	</ConfirmView>
 </template>
 
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
+import ConfirmView from "@/components/ConfirmView";
 
 	const OPTION_LIST = [
 		{value:'-1',title:'졸업 구분을 선택해주세요'},
@@ -279,6 +289,9 @@ import { onMounted, reactive, ref, watch } from "vue";
 		{value:'2',title:'휴학'},
 		{value:'3',title:'중퇴'},
 	]
+
+	const showConfirm = ref(false);
+	const selectedIndex = ref(null);
 
 	const fileEl = ref(null);
 	const profile = reactive({});
@@ -310,6 +323,17 @@ import { onMounted, reactive, ref, watch } from "vue";
 		coverLetter: () => {
 			coverLetterList.push({});
 		}
+	}
+
+	const openConfirm = index => {
+		selectedIndex.value = index;
+		showConfirm.value = true;
+	}
+
+	const deleteItem = () => {
+		coverLetterList.splice(selectedIndex.value, 1);
+		selectedIndex.value = null;
+		showConfirm.value = false;
 	}
 
 	watch(editMode, (newValue)=>{
@@ -344,6 +368,13 @@ import { onMounted, reactive, ref, watch } from "vue";
 	}
 </script>
 <style lang="scss">
+	* {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		box-sizing: border-box;
+		text-decoration: none;
+	}
 	input, select {
 		border: none;
 	}
@@ -370,14 +401,6 @@ import { onMounted, reactive, ref, watch } from "vue";
 	}
 </style>
 <style lang="scss" scoped>
-	* {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		box-sizing: border-box;
-		text-decoration: none;
-	}
-
 	.mt-50 {
 		margin-top: 50px;
 	}
