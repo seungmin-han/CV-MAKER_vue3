@@ -51,7 +51,6 @@
 							<table>
 								<tr>
 									<th>이름</th>
-									<!-- <td contenteditable @input="profile.krNm = $event.target.innerHTML">{{profile.krNm}}</td> -->
 									<td><input type="text" v-model="profile.krNm"></td>
 									<th>영문 이름</th>
 									<td><input type="text" v-model="profile.engNm"></td>
@@ -75,7 +74,6 @@
 								<tr>
 									<th>주소</th>
 									<td colspan="3" class="profile">
-										<!-- <textarea rows="1" v-model="profile.address" @input="resize($event.target)"></textarea> -->
 										<div 
 											class="textarea-div ta-l profile" 
 											:contenteditable="editMode" 
@@ -190,12 +188,6 @@
 								<tr v-for="(award,index) in awardList" :key="index">
 									<td><input type="text" v-model="award.awardDate"></td>
 									<td class="award">
-										<!-- <textarea 
-											v-model="award.awardNm" 
-											maxlength="50" 
-											rows="1" 
-											@input="resize($event.target)">
-										</textarea> -->
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
@@ -204,9 +196,7 @@
 											{{award.awardNm}}
 										</div>
 									</td>
-									<!-- <td><input type="text" maxlength="50" v-model="award.awardLevel"></td> -->
 									<td class="award">
-										<!-- <textarea v-model="award.awardLevel" maxlength="50" rows="1" @input="resize($event.target)"></textarea> -->
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
@@ -289,9 +279,7 @@
 								<tr v-for="(portfolio, index) in portfolioList" :key="index">
 									<td><input type="text" v-model="portfolio.portfolioDate"></td>
 									<td><input type="text" v-model="portfolio.portfolioNm"></td>
-									<!-- <td><input type="text" v-model="portfolio.portfolioContent"></td> -->
 									<td class="portfolio">
-										<!-- <textarea v-model="portfolio.portfolioContent" rows="1" @input="resize($event.target)"></textarea> -->
 										<div 
 											class="textarea-div ta-l portfolio" 
 											:contenteditable="editMode" 
@@ -351,7 +339,6 @@
 							<tbody>
 								<tr>
 									<td class="cover-letter">
-										<!-- <textarea v-if="editMode" rows="2" v-model="cl.content" @input="resize($event.target)"></textarea> -->
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
@@ -422,10 +409,6 @@ import VueHtml2pdf from 'vue3-html2pdf';
 
 	const saveToPDF = () => {
 		h2p.value.generatePdf();
-		// html2canvas(h2p.value.$el).then(canvas => {
-		// 	canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({"image/png": blob})]))
-		// })
-
 	}
 
 	const addItem =  {
@@ -477,11 +460,6 @@ import VueHtml2pdf from 'vue3-html2pdf';
 			el.disabled = true;
 		}
 	})
-
-	// const resize = (target) => {
-	// 	target.style.height = '1px';
-	// 	target.style.height = target.scrollHeight + 'px';
-	// }
 
 	const changeImg = (e)=> {
 		try {
