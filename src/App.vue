@@ -1,5 +1,6 @@
 <template>
 	<button @click="editMode=!editMode" style="position:fixed; top: 100px; left:100px; width:100px; height:50px">{{editMode?'View':'Edit'}} Mode</button>
+	<!-- 이력서 -->
 	<div class="container">
 		<h1>이 력 서</h1>
 		<!-- 프로필 -->
@@ -240,6 +241,32 @@
 			</table>
 		</div>
 	</div>
+	<!-- 자기소개서 -->
+	<div class="container">
+		<h1>자기소개서</h1>
+
+		<div class="introduce_container table_container mt-50" v-for="(cl, index) in coverLetterList" :key="index">
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<input type="text" v-model="cl.title">
+							<div class="btn-group" v-if="editMode">
+								<button class="btn delete" @click="showConfirm(index)">삭제</button>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<textarea rows="1" @input="resize"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </template>
 
 <script setup>
@@ -260,6 +287,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 	const awardList = reactive([{}]);
 	const licenseList = reactive([{}]);
 	const portfolioList = reactive([{}]);
+	const coverLetterList = reactive([{}]);
 
 	const editMode = ref(false);
 
@@ -279,6 +307,9 @@ import { onMounted, reactive, ref, watch } from "vue";
 		portfolio: () => {
 			portfolioList.push({});
 		},
+		coverLetter: () => {
+			coverLetterList.push({});
+		}
 	}
 
 	watch(editMode, (newValue)=>{
@@ -313,6 +344,32 @@ import { onMounted, reactive, ref, watch } from "vue";
 	}
 </script>
 <style lang="scss">
+	input, select {
+		border: none;
+	}
+	input:focus {
+		outline: none;
+	}
+	button {
+		cursor: pointer;
+		&.disabled {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+	}
+	.btn {
+		padding: 5px;
+		width: 100%;
+		font-size: 12px;
+		font-weight: bold;
+		border: none;
+		&.delete {
+			background-color: #f94141;
+			color: #fff;
+		}
+	}
+</style>
+<style lang="scss" scoped>
 	* {
 		margin: 0;
 		padding: 0;
@@ -359,19 +416,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 		}
 	}
 
-	input, select {
-		border: none;
-	}
-	input:focus {
-		outline: none;
-	}
-	button {
-		cursor: pointer;
-		&.disabled {
-			opacity: 0.3;
-			pointer-events: none;
-		}
-	}
+	
 	
 
 	.container {
@@ -379,9 +424,9 @@ import { onMounted, reactive, ref, watch } from "vue";
 
 		width: 21cm;
 		min-height: 29.7cm;
-		padding: 20px;
+		padding: 30px;
 		
-		margin: 0 auto;
+		margin: 20px auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -389,11 +434,8 @@ import { onMounted, reactive, ref, watch } from "vue";
 			width: 100%;
 			display: flex;
 			align-items: center;
-			justify-content: center;
+			justify-content: space-between;
 
-			> * {
-				margin: 0 30px;	
-			}	
 			th {
 				padding: 5px;
 				text-align: left;
@@ -413,27 +455,28 @@ import { onMounted, reactive, ref, watch } from "vue";
 		}
 
 		.table_container {
-			width: 92%;
+			width: 100%;
 			table {
 				margin-top: 20px;
 			}
-			.btn {
-				padding: 5px;
-				width: 100%;
-				font-size: 12px;
-				font-weight: bold;
-				border: none;
-				&.delete {
-					background-color: #f94141;
-					color: #fff;
-				}
-			}
+			
 			
 		}
 	}
-	
-	body {
-		margin: 30px 0;
+
+	.introduce_container {
+		th {
+			padding: 5px;
+			width: 100%;
+			display: flex;
+			border: none;
+			justify-content: space-between;
+			input {
+				width: 50%;
+				font-weight: bold;
+				background: none;
+			}
+		}
 	}
 
 </style>
