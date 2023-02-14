@@ -42,8 +42,11 @@
 					<h1>이 력 서</h1>
 					<!-- 프로필 -->
 					<div class="profile-container mt-50">
-						<div class="profile-img" :class="{'img-selected':profile.imgSrc}" @click="fileEl.click()">
-							<p v-if="!profile.imgSrc">이미지 선택</p>
+						<div class="profile-img" 
+							:class="[{'img-selected':profile.imgSrc}, {'view-mode':!editMode}]" 
+							@click="fileEl.click()"
+						>
+							<p v-if="editMode && !profile.imgSrc">이미지 선택</p>
 							<img :src="profile.imgSrc" v-if="profile.imgSrc" width="125" height="" alt="프로필 이미지">
 							<input type="file" style="display: none;" ref="fileEl" @change="changeImg">
 						</div>
@@ -629,6 +632,7 @@ import VueHtml2pdf from 'vue3-html2pdf';
 				}
 
 				.profile-img {
+					cursor: pointer;
 					box-sizing: content-box;
 					border: 1px solid #000;
 					width: 125px;
@@ -637,6 +641,9 @@ import VueHtml2pdf from 'vue3-html2pdf';
 					display: flex;
 					align-items: center;
 					justify-content: center;
+					&.view-mode {
+						pointer-events: none;
+					}
 					&.img-selected {
 						background-color: #000;
 					}
