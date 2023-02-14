@@ -257,7 +257,7 @@
 						<th>
 							<input type="text" v-model="cl.title" placeholder="타이틀을 입력해주세요.">
 							<div class="btn-group" v-if="editMode">
-								<button class="btn delete" @click="openConfirm(index)">삭제</button>
+								<button class="btn delete" :disabled="index==0" :class="{disabled:index==0}" @click="openConfirm(cl,index)">삭제</button>
 							</div>
 						</th>
 					</tr>
@@ -265,7 +265,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<textarea rows="2" @input="resize"></textarea>
+							<textarea rows="2" v-model="cl.content" @input="resize"></textarea>
 						</td>
 					</tr>
 				</tbody>
@@ -335,9 +335,14 @@ import ConfirmView from "@/components/ConfirmView";
 		}
 	}
 
-	const openConfirm = index => {
-		selectedIndex.value = index;
-		showConfirm.value = true;
+	const openConfirm = (cl,index) => {
+		if(!cl.title?.length && !cl.content?.length) {
+			coverLetterList.splice(index, 1);
+		} else {
+			selectedIndex.value = index;
+			showConfirm.value = true;
+		}
+		
 	}
 
 	const deleteItem = () => {
