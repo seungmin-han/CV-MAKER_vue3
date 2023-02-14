@@ -7,12 +7,12 @@
 		>
 			{{editMode?'View':'Edit'}} Mode
 		</button>
-		<!-- <button 
+		<button 
 			@click="isRow=!isRow"
 			style="width:100px; height:50px"
 		>
 			{{isRow ? 'Column' : 'Row' }} View
-		</button> -->
+		</button>
 		<button 
 			@click="saveToPDF"
 			style="width:100px; height:50px"
@@ -22,6 +22,7 @@
 	</div>
 	<vue-html2pdf
 		class="h2p"
+		:class="{row:isRow}"
 		ref="h2p"
         :float-layout="false"
         :enable-download="false"
@@ -529,6 +530,11 @@ import VueHtml2pdf from 'vue3-html2pdf';
 </style>
 <style lang="scss" scoped>
 	.h2p::v-deep {
+		&.row {
+			section {
+				width: 100% !important;
+			}
+		}
 		section {
 			margin: 0 auto;
 		}
