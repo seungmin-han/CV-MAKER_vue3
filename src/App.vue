@@ -303,7 +303,7 @@
 								</tr>
 								<tr>
 									<td v-if="editMode" colspan="4">
-										<button class="btn" @click="addItem.license">
+										<button class="btn" @click="addItem.portfolio">
 											추가
 										</button>
 									</td>
