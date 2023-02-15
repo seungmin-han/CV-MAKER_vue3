@@ -706,6 +706,10 @@ import VueHtml2pdf from 'vue3-html2pdf';
 		}
 	}
 
+	footer {
+		width: 100%;
+	}
+
 	.footer-wrap {
 		margin-top: 20px;
 		padding: 10px;
