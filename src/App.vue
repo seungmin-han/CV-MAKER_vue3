@@ -411,6 +411,8 @@ import VueHtml2pdf from 'vue3-html2pdf';
 	}
 
 	const saveToPDF = () => {
+		editMode.value = false;
+		isRow.value = false;
 		h2p.value.generatePdf();
 	}
 
