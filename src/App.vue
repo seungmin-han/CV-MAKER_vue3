@@ -80,7 +80,7 @@
 										<div 
 											class="textarea-div ta-l profile" 
 											:contenteditable="editMode" 
-											@input="inputText(profile.address, $event)"
+											@input="inputText(profile, $event, 'address')"
 										> 
 											{{profile.address}}
 										</div>
@@ -194,7 +194,7 @@
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
-											@input="inputText(award.awardNm, $event)"
+											@input="inputText(award, $event, 'awardNm')"
 										> 
 											{{award.awardNm}}
 										</div>
@@ -203,7 +203,7 @@
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
-											@input="inputText(award.awardLevel, $event)"
+											@input="inputText(award, $event, 'awardLevel')"
 										> 
 											{{award.awardLevel}}
 										</div>
@@ -286,7 +286,7 @@
 										<div 
 											class="textarea-div ta-l portfolio" 
 											:contenteditable="editMode" 
-											@input="inputText(portfolio.portfolioContent, $event)"
+											@input="inputText(portfolio, $event, 'portfolioContent')"
 										> 
 											{{portfolio.portfolioContent}}
 										</div>
@@ -345,7 +345,7 @@
 										<div 
 											class="textarea-div ta-l" 
 											:contenteditable="editMode" 
-											@input="inputText(cl.content, $event)"
+											@input="inputText(cl, $event, 'content')"
 										> 
 											{{cl.content}}
 										</div>
@@ -416,8 +416,8 @@ import VueHtml2pdf from 'vue3-html2pdf';
 
 	const editMode = ref(false);
 
-	const inputText = (target, event) => {
-		target = event.target.innerHTML;
+	const inputText = (target, event, key) => {
+		target[key] = event.target.innerHTML;
 	}
 
 	const saveToPDF = async () => {
@@ -455,6 +455,7 @@ import VueHtml2pdf from 'vue3-html2pdf';
 	}
 
 	const openConfirm = (cl,index) => {
+		console.log(cl.title, cl.content);
 		if(!cl.title?.length && !cl.content?.length) {
 			coverLetterList.splice(index, 1);
 		} else {
