@@ -296,7 +296,7 @@
 											class="btn delete" 
 											:disabled="index==0" 
 											:class="{disabled:index==0}"
-											@click="licenseList.splice(index,1)">
+											@click="portfolio.splice(index,1)">
 											삭제
 										</button>
 									</td>
@@ -421,11 +421,16 @@ import VueHtml2pdf from 'vue3-html2pdf';
 	}
 
 	const saveToPDF = async () => {
+		const editModeOrigin = JSON.parse(JSON.stringify(editMode.value));
+		const isRowOrigin = JSON.parse(JSON.stringify(isRow.value));
+
 		saveMode.value = true;
 		editMode.value = false;
 		isRow.value = false;
 		await h2p.value.generatePdf();
 		saveMode.value = false;
+		editMode.value = editModeOrigin;
+		isRow.value = isRowOrigin;
 	}
 
 	const addItem =  {
