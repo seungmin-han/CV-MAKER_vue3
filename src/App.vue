@@ -374,6 +374,15 @@
 		@delete="deleteItem">
 	</ConfirmView>
 	</div>
+	<footer>
+        <div class="footer-wrap">
+            <p>Copyright © SEUNGMIN HAN 2023. All rights reserved.</p>
+            <ul class="social-media">
+                <li><a href="https://github.com/seungmin-han" target="_blank">github</a></li>
+                <li><a href="https://www.instagram.com/1seungm1n/" target="_blank">instagram</a></li>
+            </ul>
+        </div>
+    </footer>
 </template>
 
 <script setup>
@@ -690,5 +699,31 @@ import VueHtml2pdf from 'vue3-html2pdf';
 			width: 100%;
 			margin-top: 10px;
 		}
+	}
+
+	.footer-wrap {
+		margin-top: 20px;
+		padding: 10px;
+		width: 100%;
+		background-color: #444;
+		
+		p {
+			color: #fff;
+			text-align: center;
+			margin: 20px 0;
+		}
+		
+		> ul {
+			text-align: center;
+			> li {
+				color: #fff;
+				display: inline-block;
+				padding: 5px 10px;
+				a {
+					color: #fff;
+					text-decoration: underline;
+				}				
+			}
+		}	
 	}
 </style>
