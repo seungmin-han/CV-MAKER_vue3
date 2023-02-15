@@ -38,7 +38,7 @@
 				:class="isRow ? 'direction-row' : 'direction-col'"
 			>
 				<!-- 이력서 -->
-				<div class="container">
+				<div class="container" :class="{save:saveMode}">
 					<h1>이 력 서</h1>
 					<!-- 프로필 -->
 					<div class="profile-container mt-50">
@@ -313,7 +313,7 @@
 					</div>
 				</div>
 				<!-- 자기소개서 -->
-				<div class="container">
+				<div class="container" :class="{save:saveMode}">
 					<h1>자기소개서</h1>
 
 					<div 
@@ -389,6 +389,7 @@ import VueHtml2pdf from 'vue3-html2pdf';
 		{value:'3',title:'중퇴'},
 	]
 
+	const saveMode = ref(false);
 	const isRow = ref(false);
 	const showConfirm = ref(false);
 	const selectedIndex = ref(null);
@@ -410,10 +411,12 @@ import VueHtml2pdf from 'vue3-html2pdf';
 		target = event.target.innerHTML;
 	}
 
-	const saveToPDF = () => {
+	const saveToPDF = async () => {
+		saveMode.value = true;
 		editMode.value = false;
 		isRow.value = false;
-		h2p.value.generatePdf();
+		await h2p.value.generatePdf();
+		saveMode.value = false;
 	}
 
 	const addItem =  {
@@ -617,11 +620,15 @@ import VueHtml2pdf from 'vue3-html2pdf';
 			width: 21cm;
 			min-height: 29.7cm;
 			padding: 30px;
-			
 			margin: 20px auto;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+
+			&.save {
+				min-height: auto;
+			}
+
 			.profile-container {
 				width: 100%;
 				display: flex;
