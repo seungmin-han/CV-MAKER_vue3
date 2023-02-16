@@ -1,6 +1,6 @@
 <template>
 	<div>
-	<div style="position:fixed; top: 50px; left:100px;">
+	<div style="position:fixed; top: 0px; left:0px;">
 		<button 
 			@click="editMode=!editMode"
 			style="width:100px; height:50px"
@@ -658,6 +658,7 @@ import VueHtml2pdf from 'vue3-html2pdf';
 				.profile-img {
 					cursor: pointer;
 					box-sizing: content-box;
+					overflow: hidden;
 					border: 1px solid #000;
 					width: 125px;
 					height: 150px;
