@@ -13,6 +13,7 @@
     "sass-loader": "^13.2.0",
     "scss": "^0.2.4",
     "vue": "^3.2.13",
+    "vue3-draggable": "^2.0.9",
     "vue3-html2pdf": "^1.1.2"
   },
   "devDependencies": {

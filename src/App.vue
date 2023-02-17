@@ -103,6 +103,32 @@
 								</tr>
 							</thead>
 							<tbody>
+								<!-- <Draggable v-model="educationList" class="draggable-comp">
+									<template #item="{ item }">
+											<td><input type="text" v-model="item.eduDate"></td>
+											<td><input type="text" v-model="item.eduSchoolNm"></td>
+											<td><input type="text" v-model="item.eduMajor"></td>
+											<td>
+												<select v-if="editMode" v-model="item.graduationCode">
+													<option v-for="option in OPTION_LIST" :key="option.value" :value="option.value">
+														{{option.title}}
+													</option>
+												</select>
+												<template v-else>
+													{{item.graduationCode == -1 ? '' : OPTION_LIST.find(v=>v.value==item.graduationCode)?.title}} 
+												</template>
+											</td>
+											<td v-if="editMode">
+												<button 
+													class="btn delete" 
+													:disabled="index==0" 
+													:class="{disabled:index==0}"
+													@click="educationList.splice(index,1)">
+													삭제
+												</button>
+											</td>
+									</template>
+								</Draggable> -->
 								<tr v-for="(education,index) in educationList" :key="index">
 									<td><input type="text" v-model="education.eduDate"></td>
 									<td><input type="text" v-model="education.eduSchoolNm"></td>
@@ -388,6 +414,7 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
 import ConfirmView from "@/components/ConfirmView";
+import Draggable from 'vue3-draggable';
 import VueHtml2pdf from 'vue3-html2pdf';
 
 	const OPTION_LIST = [
@@ -530,6 +557,9 @@ import VueHtml2pdf from 'vue3-html2pdf';
 	}
 </style>
 <style lang="scss" scoped>
+	.draggable-comp::v-deep {
+		display: table-row;
+	}
 	.h2p::v-deep {
 		&.row {
 			section {
